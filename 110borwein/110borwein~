@@ -1,0 +1,15 @@
+#!/usr/bin/env php
+<?php
+function error($msg)
+{
+	exit(84);
+}
+
+if (count($argv) != 2)
+	error("2 parameters required\n");
+
+if ($argv[1] == "-h")
+{
+	echo "USAGE\n\t./110borwein\tn\n\nDESCRIPTION\n\tn\tconstant defining the integral to be computed\n";
+	exit(0);
+}

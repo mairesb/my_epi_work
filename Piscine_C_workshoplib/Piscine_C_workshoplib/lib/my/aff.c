@@ -1,0 +1,66 @@
+/*
+** aff.c for aff in /rendu/PSU_2015_my_printf/PSU_2015_my_printf/lib/my
+**
+** Made by Mairesse Baptiste (maires_b)
+** Login   <baptiste.mairesse@epitech.eu>
+**
+** Started on  Wed Nov 11 15:16:40 2015 Mairesse Baptiste (maires_b)
+** Last update Wed Nov 11 15:16:40 2015 Mairesse Baptiste (maires_b)
+*/
+#include "../../include/my.h"
+
+int 	my_strlen(char *str)
+{
+  int i;
+
+  i = 0;
+  while (str[i] != '\0')
+    i++;
+  return (i);
+}
+
+int	 my_putchar(char c)
+{
+  write(1, &c, 1);
+  return (1);
+}
+
+int 	my_putstr(char *str)
+{
+  write(1, str, my_strlen(str));
+  return (my_strlen(str));
+}
+
+int 	my_putnbr(int nb, char *base)
+{
+  int 	divi;
+  int 	i;
+  int 	leng;
+
+  leng = my_strlen(base);
+  i = 0;
+  divi = 1;
+  if (nb < 0)
+    {
+      i += my_putchar('-');
+      nb *= -1;
+    }
+  while ((nb / divi) >= leng)
+    {
+      divi = divi * leng;
+    }
+  while (divi > 0)
+    {
+      i += my_putchar(base[(nb / divi) % leng]);
+      divi = divi / leng;
+    }
+  return (i);
+}
+
+int   	check_flag(char c)
+{
+  if (c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z')
+    return 1;
+  else
+    return 0;
+}

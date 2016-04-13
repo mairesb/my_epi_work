@@ -1,0 +1,81 @@
+#!/usr/bin/env php
+<?php
+
+$begin = 0.0;
+$end = 1.0;
+$step = 0.001;
+
+function errorExit($msg)
+{
+    exit(84);
+}
+
+class Polynome
+{
+    protected $coef = [];
+
+    public function __construct($str)
+    {
+        $this->checkValid($str);
+        $this->coef = explode('*', $str);
+        foreach ($this->coef as $k => $v)
+        {
+            $this->coef[$k] = (int)($v);
+        }
+    }
+
+    public function checkValid($str)
+    {
+        if (!preg_match("#^[0-9-]+(\\*[0-9-]+)*$#", $str))
+            errorExit("invalid parameters\n");
+    }
+
+    public function fOf($x)
+    {
+        $i = 0;
+        $result = 0.0;
+        foreach ($this->coef as $v)
+        {
+            $result += $v * pow($x, $i);
+          //  printf("%f\n", $v);
+            $i++;
+        }
+        return ($result);
+    }
+}
+
+if (count($argv) == 1 || count($argv) % 2 == 0)
+    errorExit("please precise at least one parameter");
+
+foreach ($argv as $k => $v)
+{
+    if ($v == "-h")
+    {
+        echo "USAGE\n\t./107transfert [num den]*\n\nDESCRIPTION\n\tnum\tpolynomial numerator defined by its coeficients\n\tden\tpolynomial denominator defined by its coeficients\n";
+        exit(0);
+    }
+    else if ($k != 0)
+      $expr = new Polynome($v);
+}
+
+//var_dump($argv);
+$tab = [];
+$cur = $begin;
+while ($cur < $end + $step)
+{
+  $i = 1;
+  $tab[$cur] = 1;
+  $nega = 0;
+    while ($i < count($argv))
+      {
+        $poly1 = new Polynome($argv[$i]);
+        $poly2 = new Polynome($argv[$i + 1]);
+	if ($poly2->fOf($cur) != 0)
+           $tab[$cur] *= ($poly1->fOf($cur) / $poly2->fOf($cur));
+        $i += 2;
+      } 
+    $neg = "";
+    printf("%g -> %s%.5f\n", $cur, $neg, $tab[$cur]);
+    $cur += $step;
+}
+exit(0);
